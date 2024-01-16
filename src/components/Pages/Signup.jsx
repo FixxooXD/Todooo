@@ -132,7 +132,7 @@ export const Signup = () => {
         </section>
       ) : null}
 
-      { isLoadingg || isLoading ? ( <Loading /> ) : (
+      { isLoadingg ? ( <Loading /> ) : (
         <>
           {/* <div>
            <img src={login} alt="image " className="w-[10rem9]" />
