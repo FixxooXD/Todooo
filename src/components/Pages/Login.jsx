@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../store/todoSlice";
 import { Loading } from "../Loading"
 
@@ -77,6 +77,7 @@ const Login = () => {
    {isLoadingg ? (
        <Loading />
       ) : (
+    <>
     <form
       onSubmit={handleSubmit}
       className="w-[95%] sm:w-[25rem] mt-[8rem] text-base font-pops p-4 border">
@@ -121,7 +122,10 @@ const Login = () => {
           Login
         </button>
       </div>
-    </form>)}
+    </form>
+    <div>Don't have an account? <Link className="text-blue-900" to='/auth'>GetSignUp</Link></div>
+    </>
+    )}
 
     </div>
   )

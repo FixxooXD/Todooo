@@ -22,7 +22,9 @@ export const AddUser = createAsyncThunk(
       // const response = await axios.post("http://localhost:3000/auth", {
         userName: userName,
         userPassword: password,
-      });
+        Todos:[0]
+      },
+      );
       if (!response.data) {
         return rejectWithValue("No user found");
       }

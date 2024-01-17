@@ -6,7 +6,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AddUser } from "../../store/todoSlice";
 import { Loading } from "../Loading";
@@ -247,6 +247,7 @@ export const Signup = () => {
               </button>
             </div>
           </form>
+          <div>Already Have anu account? <Link className="text-blue-900" to='/auth/login'>GetLogin</Link></div>
         </>
       )}
     </div>
