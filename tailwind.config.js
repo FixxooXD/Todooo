@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {},
+    theme: {
+      fontFamily: {
+        'pops': ['Oswald', "sans-serif"]
+      }
+    }
   },
   plugins: [],
 }

@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AddUser } from "../../store/todoSlice";
 import { Loading } from "../Loading";
+import Nav from "../Nav";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -116,6 +117,8 @@ export const Signup = () => {
   }, [successMSG]);
 
   return (
+    <>
+    <Nav /> 
     <div className="relative flex flex-col items-center mx-2">
       {isError ? (
         <section className="absolute px-5 h-[2rem] mt-[5rem] border-2">
@@ -139,7 +142,7 @@ export const Signup = () => {
         </div> */}
           <form
             onSubmit={handleSubmit}
-            className="w-[95%] sm:w-[25rem] mt-[8rem] text-base font-pops">
+            className="w-[95%] sm:w-[25rem] mt-[5rem] text-base font-pops">
             <div className="container border-2 flex flex-col p-5 ">
               <h1 className="text-xl">Signup</h1>
               <div className="flex flex-col border rounded-xl mt-4 px-2 py-[0.4rem] ">
@@ -251,5 +254,6 @@ export const Signup = () => {
         </>
       )}
     </div>
+    </>
   );
 };
