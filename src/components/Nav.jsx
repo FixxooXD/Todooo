@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import UserProfile from './UserProfile'
+import { Link } from 'react-router-dom';
 
 
 
@@ -15,7 +16,7 @@ const Nav = () => {
        <h1>Todooo</h1>
 
        {
-        isAuthenticated ? <UserProfile /> : null
+        isAuthenticated ? <UserProfile /> : <Link className='text-lg' to='/auth/login'>Sign in</Link>
        }
 
     </div>
