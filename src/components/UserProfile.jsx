@@ -1,19 +1,38 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { useSelector } from 'react-redux'
+import React, {useState} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { Loading } from "./Loading";
+import { logOut } from "../store/todoSlice";
 
-const UserProfile = () => {
+const UserProfile = ({ user }) => {
+   const dispatch = useDispatch();
+   const loading = useSelector(state => state.user.isLoading)
+  const [isLoadingg, setIsLoading] = useState(true);
+  console.log(user);
 
-    // const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-    // console.log(isAuthenticated)
-     const  user = useSelector((state) => state.user.user.userData[0].userName);
-     console.log(user)
+  setTimeout(() => {
+   setIsLoading(false) 
+ }, 1000);
+   
+ const handleClick = () => {
+    dispatch(logOut())
+ }
+
   return (
-     <div>
-        <p className='text-sm'><FontAwesomeIcon icon={faUser} /><span className='mx-2'>{user}</span></p>
-    </div>
-  )
-}
+    <>
+      {isLoadingg ? (
+        <Loading />
+      ) : (
+        <div onClick={handleClick}>
+          <p className="text-sm">
+            <FontAwesomeIcon icon={faUser} />
+            <span className="mx-2">{user.userName}</span>
+          </p>
+        </div>
+      )}
+    </>
+  );
+};
 
-export default UserProfile
+export default UserProfile;
