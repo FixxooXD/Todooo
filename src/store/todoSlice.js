@@ -17,9 +17,9 @@ export const AddUser = createAsyncThunk(
     try {
       console.log(userName, password);
 
-          const response = await axios.post(
-            "https://todoos-server.onrender.com/auth",
-            {
+      const response = await axios.post(
+        "https://todoos-server.onrender.com/auth",
+        {
           // const response = await axios.post("http://localhost:3000/auth", {
           userName: userName,
           userPassword: password,
@@ -42,12 +42,15 @@ export const loginUser = createAsyncThunk(
   async ({ userName, password }) => {
     console.log(userName, password);
     try {
-      const response = await axios.post("https://todoos-server.onrender.com/auth/login", {
-      // const response = await axios.post("http://localhost:3000/auth/login", {
-        userName: userName,
-        userPassword: password,
-        Todo: [0],
-      });
+      const response = await axios.post(
+        "https://todoos-server.onrender.com/auth/login",
+        {
+          // const response = await axios.post("http://localhost:3000/auth/login", {
+          userName: userName,
+          userPassword: password,
+          Todo: [0],
+        }
+      );
       if (!response.data) {
         return rejectWithValue("No user found");
       }
@@ -61,11 +64,14 @@ export const loginUser = createAsyncThunk(
 export const AddTask = createAsyncThunk("AddTask", async ({ user, task }) => {
   try {
     console.log(user.userName, task);
-    const response = await axios.put("https://todoos-server.onrender.com/todos", {
-    // const response = await axios.put("http://localhost:3000/todos", {
-      userName: user.userName,
-      task: task,
-    });
+    const response = await axios.put(
+      "https://todoos-server.onrender.com/todos",
+      {
+        // const response = await axios.put("http://localhost:3000/todos", {
+        userName: user.userName,
+        task: task,
+      }
+    );
     if (!response.data) {
       return rejectWithValue("No user found");
     }
@@ -75,12 +81,68 @@ export const AddTask = createAsyncThunk("AddTask", async ({ user, task }) => {
   }
 });
 
+export const UpdateTask = createAsyncThunk(
+  "UpdateTask",
+  async ({ todoId, updatedTask }) => {
+    try {
+      console.log(todoId, updatedTask);
+      const response = await axios.put(
+        "https://todoos-server.onrender.com/todos",
+        {
+          // const response = await axios.patch("http://localhost:3000/todos", {
+          id: todoId,
+          task: updatedTask,
+        }
+      );
+      if (!response.data) {
+        return rejectWithValue("No user found");
+      }
+      return response.data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
+
+export const DeleteTask = createAsyncThunk(
+  "DeleteTask",
+  async ({ userId, taskId }) => {
+    try {
+      console.log(userId, taskId);
+      const response = await axios.put(
+        "https://todoos-server.onrender.com/todos",
+        {
+          // const response = await axios.delete("http://localhost:3000/todos", {
+          data: {
+            id: userId,
+            taskId: taskId,
+          },
+        }
+      );
+      if (!response.data) {
+        return rejectWithValue("No user found");
+      }
+      return response.data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
+
 export const todoSlice = createSlice({
   name: "TodoSlice",
   initialState,
   reducers: {
     logOut: (state, actions) => {
-       state.isAuthenticated = false
+      state.isAuthenticated = false;
+    },
+    editTask: (state, actions) => {
+      let data = actions.payload;
+      let editTaskId = data.id;
+      let editTask = data.task;
+      state.todos = state.todos.map((todo) =>
+        todo._id === editTaskId ? { ...todo, isEditing: true } : todo
+      );
     },
   },
   extraReducers: (builder) => {
@@ -123,9 +185,9 @@ export const todoSlice = createSlice({
         state.isError = null;
         state.isAuthenticated = true;
         state.successMSG = "Sign up Successful!!";
-        state.userData.push(actions.payload)
+        state.userData.push(actions.payload);
         let todo = actions.payload.todo;
-        state.todos = todo
+        state.todos = todo;
         // console.log(actions.payload);
       }
       // state.users.userData.push(actions.payload)
@@ -141,12 +203,38 @@ export const todoSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       let data = actions.payload;
-      let userTodos = data.todo
-      state.todos = [...userTodos]
+      let userTodos = data.todo;
+      state.todos = [...userTodos];
       console.log(userTodos);
+    });
+
+    builder.addCase(UpdateTask.pending, (state, actions) => {
+      state.isSuccess = false;
+    });
+
+    builder.addCase(UpdateTask.fulfilled, (state, actions) => {
+      state.isSuccess = true;
+      let data = actions.payload;
+      let userTodos = data.todo;
+      state.todos = [...userTodos];
+      console.log(actions.payload);
+    });
+
+    builder.addCase(DeleteTask.pending, (state, actions) => {
+      state.isSuccess = false;
+    });
+
+    builder.addCase(DeleteTask.fulfilled, (state, actions) => {
+      // console.log(actions.payload);
+      state.isSuccess = true;
+      let data = actions.payload;
+      console.log(data);
+      let userTodos = data.todo;
+      state.todos = [...userTodos];
+      console.log(actions.payload);
     });
   },
 });
 
-export const { logOut } = todoSlice.actions;
+export const { logOut, editTask } = todoSlice.actions;
 export default todoSlice.reducer;

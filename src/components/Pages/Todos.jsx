@@ -11,11 +11,10 @@ export const Todos = () => {
   const [task, setTask] = useState("");
   const dispatch = useDispatch();
   let userData = useSelector((state) => state.user.userData[0]);
-
   let user = useSelector((state) => state.user.userData[0]);
   let todos = useSelector((state) => state.user.todos);
   // console.log(JSON.stringify(userData));
-
+  // console.log(userId)
 
   const handleChange = (e) => {
     setTask(e.target.value);
@@ -55,7 +54,7 @@ export const Todos = () => {
            <button className="border-2 w-24">Add task</button>
          </div>
        </form>
-       <Todo todos={todos} />
+       <Todo todos={todos} user={user} />
      </div>
     )}
     </>
